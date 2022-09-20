@@ -1,5 +1,6 @@
 node_modules
 **/node_modules
 **/tsconfig.tsbuildinfo
-
+build
+.cache
 .DS_Store
