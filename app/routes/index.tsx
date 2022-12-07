@@ -1,31 +1,25 @@
-import { SearchHit } from "@elastic/elasticsearch/lib/api/types";
 import { Form, useActionData, useSubmit } from "@remix-run/react";
-import { AdaHandle, searchHandle } from "~/services/elasticsearch.server";
-
+import { AdaHandle, searchHandle } from "~/services/redis.server";
 
 function ResultTableRow(props: { data: AdaHandle }) {
     return (
-        <tr className="border-b dark:border-gray-700">
-            <td className="px-6 py-4">
-                <span>{props.data.key}</span>
-            </td>
-            <td className="px-6 py-4 w-96">
-                <span>{props.data.value}</span>
-            </td>
+        <tr className="odd:bg-gray-900 even:bg-gray-850 hover:bg-gray-750 transition-all">
+            <td className="text-sm px-6 py-3">{props.data.key}</td>
+            <td className="text-sm px-6 py-3">{props.data.value}</td>
         </tr>
     )
 }
 
 function ResultTable(props: { data: AdaHandle[] }) {
     return (
-        <div className="relative overflow-x-auto shadow-md rounded-lg">
-            <table className="w-full text-md text-left text-gray-500 dark:text-gray-400 dark:bg-gray-800">
-                <thead className="text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        
+            <table className="rounded-md overflow-hidden w-full">
+                <thead className="border-b border-gray-950">
                     <tr>
-                        <th scope="col" className="px-6 py-3">
+                        <th scope="col" className="bg-gray-900 py-3 px-6 text-sm text-left text-gray-400 font-normal">
                             AdaHandle
                         </th>
-                        <td scope="col" className="px-6 py-3">
+                        <td scope="col" className="bg-gray-900 py-3 px-6 text-sm text-left text-gray-400 font-normal">
                             Address
                         </td>
                     </tr>
@@ -34,7 +28,6 @@ function ResultTable(props: { data: AdaHandle[] }) {
                     {props.data.map(x => <ResultTableRow key={x.key} data={x} />)}
                 </tbody>
             </table>
-        </div>
     )
 }
 
@@ -52,15 +45,7 @@ export async function action({ request }) {
         // Executes the query
         const searchResult = await searchHandle(searchValue);
 
-        const result = searchResult.hits.hits.map((s: SearchHit<AdaHandle>) => {
-            const data: AdaHandle = {
-                key: s._source!.key,
-                value: s._source!.value,
-            }
-            return data;
-        });
-
-        return { searchResult: result };
+        return { searchResult };
     }
     return { searchResult: [] };
 }
@@ -75,29 +60,31 @@ export default function Index() {
     }
 
     return (
-        <div className="w-full h-full">
-            <div className="container max-w-6xl p-16  h-full w-full">
-                <header className="mb-3 py-6 w-full flex flex-col justify-between">
-                    <div className='flex'>
-                        <img src="/logo.svg" className="mr-4 h-6" alt="TxPipe Logo" />
-                        <h2 className="text-m text-gray-400 font-normal">Starter Kit provided by TxPipe</h2>
+        <div className="bg-gray-950 w-full h-full">
+            <div className="container max-w-6xl p-16 text-white">
+                <header>
+                    <div className="flex">
+                        <img src="/logo.svg" className="mr-4 w-5 h-5" alt="TxPipe Logo" />
+                        <p className="text-sm">Starter Kit provided by TxPipe</p>
                     </div>
 
-                    <h3 className="text-3xl text-gray-200 font-extrabold mt-4">Ada Handle to Address</h3>
-                    <div className="mt-8 rounded-lg border border-blue-500 bg-blue-600 bg-opacity-10 p-4 text-white mb-4">
-                        <h1 className="font-bold">Look for the Address associated to an ADA handle</h1>
-                        <h3 className="text-sm text-blue-500 mt-2">This starter kit implements the functionality provided by the Scrolls library for searching the address associated to an ADA handle. Start typing the name of the handle for doing a real-time search in the blockchain.</h3>
+                    <h1 className="text-4xl font-light mt-2">Ada Handle to Address</h1>
+                    <p className="text-gray-400 mt-8">
+                        Look for the Address associated to an ADA handle.
+                    </p>
+                    <div className="rounded-md bg-gray-600 bg-opacity-10 p-6">
+                        <p>This starter kit implements the functionality provided by the Scrolls library for searching the address associated to an ADA handle. Start typing the name of the handle for doing a real-time search in the blockchain.</p>
                     </div>
                 </header>
-                <div className="mb-6">
+                <div className="mt-6">
                     <Form method="post" onChange={handleChange}>
-                        <label htmlFor="search-input" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Search</label>
-                        <input type="text" id="search-input" name="search-input" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                        <label htmlFor="search-input" className="block mb-2">Search</label>
+                        <input type="text" id="search-input" name="search-input" className="block px-6 h-12 w-full rounded-md text-base bg-gray-800 placeholder-gray-400 text-gray-200 focus:ring-blue-500 focus:ring-1 focus-visible:outline-0" />
                     </Form>
                 </div>
                 <div className="mt-8">
-                    <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Result</label>
-                    {actionData?.searchResult.length ? <ResultTable data={actionData.searchResult} /> : null}
+                    <label htmlFor="base-input" className="block mb-2">Result</label>
+                    {actionData?.searchResult?.length ? <ResultTable data={actionData.searchResult} /> : null}
                 </div>
             </div>
         </div>
