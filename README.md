@@ -27,7 +27,7 @@ const client = redis.createClient({
 
 The redis instance is storing the the ADA handle as a key with a c. prefix. 
 
-```json
+```bash
 [
    'c.ada',             'c.ada-',            'c.ada--',
    'c.ada-.-whale',     'c.ada-1',           'c.ada-1111',
