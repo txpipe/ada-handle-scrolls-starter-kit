@@ -11,7 +11,6 @@ export interface AdaHandle {
 
 export async function searchHandle(name: string): Promise<AdaHandle[]> {
   if (!client.isReady) {
-    console.log("connecting redis client");
     await client.connect();
   }
 
