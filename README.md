@@ -2,6 +2,8 @@
 
 This starter kit shows how to build a simple application which queries the [Scrolls](https://github.com/txpipe/scrolls) instance provided by [Demeter.run](https://demeter.run) for fetching the address associated to an [ADA Handle](https://adahandle.com/).
 
+<img src="public/example-result.png" alt="example-result">
+
 ## Dev Environment
 
 For running this starter kit you'll need access to a [Scrolls](https://github.com/txpipe/scrolls) instance running the [ADA Handle Reducer](https://github.com/txpipe/scrolls/blob/main/src/reducers/address_by_ada_handle.rs).
@@ -77,8 +79,6 @@ Then we just need to read the values from all keys returned before sending the i
 ```typescript
 const values = await client.mGet(keys);
 ```
-
-<img src="public/example-result.png" alt="example-result">
 
 ### Building & Running the Application
 

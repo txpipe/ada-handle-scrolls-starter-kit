@@ -11,7 +11,7 @@ module.exports = {
       fontFamily: {
         serif: ['Inter', 'sans-serif'],
         sans: ['Inter', 'sans'],
-      },
+    },
       colors: {
         txpink: '#DD62FD',
         txpink2: '#9E46B4',
