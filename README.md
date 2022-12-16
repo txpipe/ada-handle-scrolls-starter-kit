@@ -2,7 +2,7 @@
 
 This starter kit shows how to build a simple application which queries the [Scrolls](https://github.com/txpipe/scrolls) instance provided by [Demeter.run](https://demeter.run) for fetching the address associated to an [ADA Handle](https://adahandle.com/).
 
-<img src="public/example-result.png" alt="example-result">
+<img src="public/ada-handle-example.png" alt="example-result">
 
 ## Dev Environment
 
@@ -105,8 +105,8 @@ For doing this in the [Demeter.run](https://demeter.run) console go to your work
 
 From this tab you can select to expose a new port. 
 
-<img src="/public/expose-port-new.png" alt="expose-port-new">
+<img src="/public/ada-handle-expose-port.png" alt="expose-port-new">
 
 Once your port is exposed you can click en the auto generated URL and it should open a new browser tab with your application running.
 
-<img src="/public/expose-port-list.png" alt="expose-port-list">
+<img src="/public/ada-handle-exposed-ports.png" alt="expose-port-list">
